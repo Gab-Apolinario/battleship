@@ -1,2 +1,3 @@
 target/
 .vscode/
+src/main/java/battleship/model/TesteShips.java
