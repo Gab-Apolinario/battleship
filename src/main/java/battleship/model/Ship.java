@@ -44,11 +44,29 @@ public abstract class Ship {
     }
 
     public boolean occupies(int row, int col) {
+        if (segmentIndexAt(row, col) != -1) {
+            return true;
+        }
         return false;
     }
 
+    //Traduz uma coordenada do tabuleiro para uma posição do array hitSegments
     public int segmentIndexAt(int row, int col) {
-        return 0;
+        //Horizontal -> row não muda
+        if (orientation == Orientation.HORIZONTAL) {
+            int index = col - startCol;
+
+            //está na mesma linha | não está a esquerda do início do navio | não passou do tamanho total
+            if (row == startRow && (index >= 0 && index < size - 1)) {
+                return index;
+            }
+        } else { //vertical -> col não muda
+            int index = row - startRow;
+            if (col == startCol && (index >= 0 && index <= size - 1)) {
+                return index;
+            }
+        }
+        return -1;
     }
     
     public boolean isSegmentHit(int segmentIndex) {
