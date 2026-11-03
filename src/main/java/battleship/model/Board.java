@@ -42,7 +42,33 @@ public class Board {
     }
 
     public boolean placeShip(Ship ship, int row, int col, Orientation orientation) {
-        return false;
+        if (!canPlace(ship, row, col, orientation)) { //navio NÃO cabe
+            return false;
+        }
+
+        //Navio CABE
+        ship.setPosition(row, col, orientation); //registra posição do navio em Ship
+        
+        //grid altera CellStates para SHIP
+        for (int i = 0; i < ship.getSize(); i++) {
+            int linha;
+            int coluna;
+
+            if (orientation == Orientation.HORIZONTAL) {
+                linha = row;
+                coluna = col + i;
+            } else {
+                linha = row + i;
+                coluna = col;
+            }
+
+            grid[linha][coluna] = CellState.SHIP;
+            shipByCoordinate.put(coordinateKey(linha, coluna), ship); //registra navio novo no MAP
+        }
+
+        ships.add(ship); //adiciona na lista ships
+
+        return true;
     }
 
     public boolean rotateShip(Ship ship) {
@@ -53,8 +79,35 @@ public class Board {
 
     }
 
+    //responde 'navio cabe nessa posição, com essa orientação?' -> bool
     public boolean canPlace(Ship ship, int row, int col, Orientation orientation) {
-        return false;
+        //for com as chamadas
+        //return / break caso ache falha
+        
+        for (int i = 0; i < ship.getSize(); i++) {
+            int linha;
+            int coluna;
+            
+            //ajusta var locais para verificar orientação, assim como foi feito em segmentIndexAt() (Ship)
+            if (orientation == Orientation.HORIZONTAL) {
+                linha = row; //H -> trava row
+                coluna = col + i; //H -> muda col
+            } else {
+                linha = row + i; //V -> muda row
+                coluna = col; //V -> trava col
+            }
+            
+            //pergunta se a célula do navio está fora do grid
+            if (!isInside(linha, coluna)) {
+                return false;
+            }
+            
+            //pergunta se já tem um navio na posição
+            if (getShipAt(linha, coluna) != null) {
+                return false;
+            }
+        }
+        return true; //pode posicionar (depois de todas as verificações)
     }
 
     public ShotResult receiveShot(int row, int col) {
