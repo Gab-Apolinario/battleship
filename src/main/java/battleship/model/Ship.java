@@ -29,7 +29,18 @@ public abstract class Ship {
     }
 
     public void registerHit(int segmentIndex) {
+        //marca posição como atingida
+        if (hitSegments[segmentIndex] == false) {
+            hitSegments[segmentIndex] = true;
+        }
 
+        boolean allHit = true; //supõe numa var local que o barco afundou e verifica em seguida
+        for (boolean b : hitSegments) {            
+            if (!b) {
+                allHit = false; //encontrou um segmento NÃO atingido, muda a var
+            }
+        }
+        this.sunk = allHit; //altera atributo
     }
 
     public boolean occupies(int row, int col) {
@@ -41,8 +52,7 @@ public abstract class Ship {
     }
     
     public boolean isSegmentHit(int segmentIndex) {
-        return false;
-
+        return hitSegments[segmentIndex];
     }
 
     public void setPosition(int row, int col, Orientation orientation) {
@@ -62,11 +72,11 @@ public abstract class Ship {
     }
 
     public boolean isSunk() {
-        return false;
+        return this.sunk;
     }
 
     public int getSize() {
-        return 0;
+        return this.size;
     }
 
     public abstract String getDescription();
