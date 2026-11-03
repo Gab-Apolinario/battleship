@@ -56,11 +56,14 @@ public abstract class Ship {
     }
 
     public void setPosition(int row, int col, Orientation orientation) {
-
+        this.startRow = row;
+        this.startCol = col;
+        this.orientation = orientation;
+        this.placed = true;
     }
-
+    
     public void setOrientation(Orientation orientation) {
-
+        this.orientation = orientation;
     }
 
     public List<String> getCoordinates() {
@@ -68,7 +71,13 @@ public abstract class Ship {
     }
 
     public int getHits() {
-        return 0;
+        int hits = 0; // contador de hits
+        for (boolean hit : hitSegments) {
+            if (hit) {
+                hits++;
+            }
+        }
+        return hits;
     }
 
     public boolean isSunk() {
