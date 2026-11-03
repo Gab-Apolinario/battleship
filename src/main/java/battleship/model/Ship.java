@@ -57,7 +57,7 @@ public abstract class Ship {
             int index = col - startCol;
 
             //está na mesma linha | não está a esquerda do início do navio | não passou do tamanho total
-            if (row == startRow && (index >= 0 && index < size - 1)) {
+            if (row == startRow && (index >= 0 && index <= size - 1)) {
                 return index;
             }
         } else { //vertical -> col não muda
@@ -100,6 +100,18 @@ public abstract class Ship {
 
     public boolean isSunk() {
         return this.sunk;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public char getSymbol() {
+        return symbol;
     }
 
     public int getSize() {
