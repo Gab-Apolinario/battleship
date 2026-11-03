@@ -61,16 +61,26 @@ public class Board {
         return null;
     }
 
+    //devolve TRUE se a coordenada existe no tabuleiro
     public boolean isInside(int row, int col) {
+        if ((row >= 0 && row <= size - 1) && (col >= 0 && col <= size - 1)) {
+            return true;
+        }
         return false;
     }
 
+    //devolve valor do enum CellState da posição (row,col)
     public CellState getCellState(int row, int col) {
-        return null;
+        if (!isInside(row, col)) { //verificação para evitar o erro antes dele acontecer
+            return null; //não quebra
+        } else {
+            return grid[row][col];
+        }
     }
 
+    //devolve navio da célula ou null se for água
     public Ship getShipAt(int row, int col) {
-        return  null;
+        return shipByCoordinate.get(coordinateKey(row, col));
     }
 
     public void placeFleetRandomly(List<Ship> fleet, Random random) {
