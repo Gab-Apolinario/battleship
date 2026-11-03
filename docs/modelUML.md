@@ -70,8 +70,8 @@ classDiagram
         +Submarine(id: int, orientation: Orientation)
         +getDescription() String
     }
-    class Frigate {
-        +Frigate(id: int, orientation: Orientation)
+    class Destroyer {
+        +Destroyer(id: int, orientation: Orientation)
         +getDescription() String
     }
 
@@ -151,7 +151,7 @@ classDiagram
     Ship <|-- Battleship
     Ship <|-- Cruiser
     Ship <|-- Submarine
-    Ship <|-- Frigate
+    Ship <|-- Destroyer
 
     Player <|-- HumanPlayer
     Player <|-- AIPlayer
@@ -170,7 +170,7 @@ classDiagram
 - Visibility: `-` private, `+` public, `#` protected.
 - `<<abstract>>` above the name = abstract class. A method in *italic* is abstract (`getDescription`, `isAutomatic`). A method underlined is static (`coordinateKey`).
 - Hollow triangle arrow = inheritance (`extends`). Filled diamond = composition (the whole owns the part).
-- Ship sizes: Carrier 5, Battleship 4, Cruiser 3, Submarine 3, Frigate 2.
+- Ship sizes: Carrier 5, Battleship 4, Cruiser 3, Submarine 3, Destroyer 2.
 - `shipByCoordinate` (Map) links keys like `"B3"` to the `Ship` occupying that cell.
 - Getters/setters that only return or assign a field are omitted for readability.
 - This diagram covers only the `model` package.
