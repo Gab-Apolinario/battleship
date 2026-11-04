@@ -76,7 +76,29 @@ public class Board {
     }
 
     public void removeShip(Ship ship) {
+        if (!ship.isPlaced()) { //se ainda não foi posicionado -> SEGURANÇA
+            return;
+        }
 
+        //grid altera CellStates para WATER
+        for (int i = 0; i < ship.getSize(); i++) {
+            int linha;
+            int coluna;
+
+            if (ship.getOrientation() == Orientation.HORIZONTAL) {
+                linha = ship.getStartRow();
+                coluna = ship.getStartCol() + i;
+            } else {
+                linha = ship.getStartRow() + i;
+                coluna = ship.getStartCol();
+            }
+
+            grid[linha][coluna] = CellState.WATER;
+            shipByCoordinate.remove(coordinateKey(linha, coluna), ship); //remove navio do MAP
+        }
+        
+        ship.clearPosition(); //placed = false
+        ships.remove(ship); //remove da lista
     }
 
     //responde 'navio cabe nessa posição, com essa orientação?' -> bool
