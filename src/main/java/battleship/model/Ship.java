@@ -103,19 +103,39 @@ public abstract class Ship {
     }
 
     public int getId() {
-        return id;
+        return this.id;
     }
-
+    
     public String getName() {
-        return name;
+        return this.name;
     }
 
     public char getSymbol() {
-        return symbol;
+        return this.symbol;
     }
-
+    
     public int getSize() {
         return this.size;
+    }
+    
+    public int getStartCol() {
+        return this.startCol;
+    }
+    
+    public int getStartRow() {
+        return this.startRow;
+    }
+    
+    public Orientation getOrientation() {
+        return this.orientation;
+    }
+    
+    public void clearPosition() { //método a parte para não ter como trocar para true sem passar pelo setPosiiton()
+        this.placed = false;
+    }
+    
+    public boolean isPlaced() {
+        return this.placed;
     }
 
     public abstract String getDescription();
