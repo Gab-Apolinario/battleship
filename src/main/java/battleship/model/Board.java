@@ -42,7 +42,8 @@ public class Board {
     }
 
     public boolean placeShip(Ship ship, int row, int col, Orientation orientation) {
-        if (!canPlace(ship, row, col, orientation)) { //navio NÃO cabe
+        //tabuleiro travado OU já está posicionado OU navio NÃO cabe
+        if (locked || ship.isPlaced() || !canPlace(ship, row, col, orientation)) {
             return false;
         }
 
@@ -72,7 +73,7 @@ public class Board {
     }
 
     public boolean rotateShip(Ship ship) {
-        if (!ship.isPlaced()) { //valida se está posicionado
+        if (locked || !ship.isPlaced()) { //tabuleiro travado OU navio não está posicionado
             return false;
         }
         
@@ -101,7 +102,7 @@ public class Board {
     }
 
     public void removeShip(Ship ship) {
-        if (!ship.isPlaced()) { //se ainda não foi posicionado -> SEGURANÇA
+        if (locked || !ship.isPlaced()) { //tabuleiro travado OU navio não está posicionado
             return;
         }
 
@@ -224,15 +225,19 @@ public class Board {
     }
 
     public void lock() {
-
+        this.locked = true;
     }
 
     public boolean allShipsSunk() {
+        //se a lista de navios não está vazia (começo do jogo) E todos os navios foram afundados
+        if (!ships.isEmpty() && sunkShips == ships.size()) {
+            return true;
+        }
         return false;
     }
 
     public int getRemainingShips() {
-        return 0;
+        return ships.size() - sunkShips;
     }
 
     //Formata posição para 'A2', 'D6', etc
