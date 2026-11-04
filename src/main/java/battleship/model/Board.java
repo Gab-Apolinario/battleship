@@ -178,15 +178,15 @@ public class Board {
 
         //HIT
         if (cellState == CellState.SHIP) {
-            Ship hit_ship = getShipAt(row, col);
-            int index = hit_ship.segmentIndexAt(row, col);
-            hit_ship.registerHit(index);
+            Ship hitShip = getShipAt(row, col);
+            int index = hitShip.segmentIndexAt(row, col);
+            hitShip.registerHit(index);
             shotsReceived++;
             hitsReceived++;
             lastShot = coordinateKey(row, col);
             grid[row][col] = CellState.SHIP_HIT;
 
-            if (hit_ship.isSunk()) {
+            if (hitShip.isSunk()) {
                 sunkShips++;
                 return ShotResult.SUNK;
             }
