@@ -245,4 +245,28 @@ public class Board {
         char letra = (char)('A' + col);
         return "" + letra + (row + 1);
     }
+
+    public int getSize() {
+        return this.size;
+    }
+
+    public String getLastShot() {
+        return this.lastShot;
+    }
+
+    public int getShotsReceived() {
+        return this.shotsReceived;
+    }
+
+    public int getHitsReceived() {
+        return this.hitsReceived;
+    }
+
+    public int getMissesReceived() {
+        return this.missesReceived;
+    }
+
+    public List<Ship> getShips() {
+        return List.copyOf(ships);
+    }
 }
