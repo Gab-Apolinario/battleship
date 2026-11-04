@@ -72,7 +72,32 @@ public class Board {
     }
 
     public boolean rotateShip(Ship ship) {
-        return false;
+        if (!ship.isPlaced()) { //valida se está posicionado
+            return false;
+        }
+        
+        //girar = removeShip -> setPosition com orientation inversa
+        //guarda posição atual
+        int oldRow = ship.getStartRow();
+        int oldCol = ship.getStartCol();
+        Orientation oldOrientation = ship.getOrientation();
+        
+        Orientation newOrientation;
+        if (oldOrientation == Orientation.HORIZONTAL) {
+            newOrientation = Orientation.VERTICAL;
+        } else {
+            newOrientation = Orientation.HORIZONTAL;
+        }
+
+        removeShip(ship); //limpa posição
+
+        if (canPlace(ship, oldRow, oldCol, newOrientation)) { //se puder posicionar, posiciona na posição rotacionada
+            placeShip(ship, oldRow, oldCol, newOrientation);
+            return true;
+        } else {
+            placeShip(ship, oldRow, oldCol, oldOrientation); //senão, volta na posição original
+            return false;
+        }
     }
 
     public void removeShip(Ship ship) {
