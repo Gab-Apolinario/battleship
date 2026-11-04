@@ -157,7 +157,43 @@ public class Board {
         return true; //pode posicionar (depois de todas as verificações)
     }
 
+    //Valida tiro recebido, devolve enum ShotResult
     public ShotResult receiveShot(int row, int col) {
+        CellState cellState = getCellState(row, col);
+
+        //Se não está no tabuleiro OU É SHIP_HIT OU É WATER_HIT 
+        if ((!isInside(row, col)) || (cellState == CellState.SHIP_HIT) || (cellState == CellState.WATER_HIT)) {
+            return ShotResult.INVALID;
+        }
+
+        //MISS
+        if (cellState == CellState.WATER) {
+            shotsReceived++;
+            missesReceived++;
+            lastShot = coordinateKey(row, col); //guarda a última posição atingida
+
+            grid[row][col] = CellState.WATER_HIT; //marca a célula como água atingida
+            return ShotResult.MISS;
+        }
+
+        //HIT
+        if (cellState == CellState.SHIP) {
+            Ship hit_ship = getShipAt(row, col);
+            int index = hit_ship.segmentIndexAt(row, col);
+            hit_ship.registerHit(index);
+            shotsReceived++;
+            hitsReceived++;
+            lastShot = coordinateKey(row, col);
+            grid[row][col] = CellState.SHIP_HIT;
+
+            if (hit_ship.isSunk()) {
+                sunkShips++;
+                return ShotResult.SUNK;
+            }
+
+            return ShotResult.HIT;
+        }
+
         return null;
     }
 
