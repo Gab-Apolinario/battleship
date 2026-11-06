@@ -1,5 +1,6 @@
 package battleship.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public abstract class Ship {
@@ -84,8 +85,34 @@ public abstract class Ship {
         this.orientation = orientation;
     }
 
+    //Devolve lista de coordenadas que o navio ocupa, em texto, como ["A1", "A2", "A3"]
     public List<String> getCoordinates() {
-        return null;
+        //verificar se navio está posicionado, se não estiver, retorna null
+        if (!placed) {
+            return null;
+        }
+        
+        //cria lista de coordenadas
+        List<String> shipCoordinates = new ArrayList<>();
+        
+        //verifica orientação
+        for (int i = 0; i <= size - 1; i++) {
+            int row;
+            int col;
+
+            if (orientation == Orientation.HORIZONTAL) {
+                row = startRow; //H -> trava row
+                col = startCol + i; //H -> muda col
+            } else {
+                row = startRow + i; //V -> muda row
+                col = startCol; //V -> trava col
+            }
+
+            //usar método static Board.coordinateKey(row, col) para converter
+            shipCoordinates.add(Board.coordinateKey(row, col));
+        }
+
+        return shipCoordinates;
     }
 
     public int getHits() {
