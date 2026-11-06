@@ -53,19 +53,19 @@ public class Board {
         
         //grid altera CellStates para SHIP
         for (int i = 0; i < ship.getSize(); i++) {
-            int linha;
-            int coluna;
+            int cellRow; //guarda linha da célula [i]
+            int cellCol; //guarda coluna da célula [i]
 
             if (orientation == Orientation.HORIZONTAL) {
-                linha = row;
-                coluna = col + i;
+                cellRow = row; //H -> trava row
+                cellCol = col + i; //H -> muda col
             } else {
-                linha = row + i;
-                coluna = col;
+                cellRow = row + i; //V -> muda row
+                cellCol = col; //V -> trava col
             }
 
-            grid[linha][coluna] = CellState.SHIP;
-            shipByCoordinate.put(coordinateKey(linha, coluna), ship); //registra navio novo no MAP
+            grid[cellRow][cellCol] = CellState.SHIP;
+            shipByCoordinate.put(coordinateKey(cellRow, cellCol), ship); //registra navio novo no MAP
         }
 
         ships.add(ship); //adiciona na lista ships
@@ -109,19 +109,19 @@ public class Board {
 
         //grid altera CellStates para WATER
         for (int i = 0; i < ship.getSize(); i++) {
-            int linha;
-            int coluna;
+            int cellRow; //guarda linha da célula [i]
+            int cellCol; //guarda coluna da célula [i]
 
             if (ship.getOrientation() == Orientation.HORIZONTAL) {
-                linha = ship.getStartRow();
-                coluna = ship.getStartCol() + i;
+                cellRow = ship.getStartRow();
+                cellCol = ship.getStartCol() + i;
             } else {
-                linha = ship.getStartRow() + i;
-                coluna = ship.getStartCol();
+                cellRow = ship.getStartRow() + i;
+                cellCol = ship.getStartCol();
             }
 
-            grid[linha][coluna] = CellState.WATER;
-            shipByCoordinate.remove(coordinateKey(linha, coluna), ship); //remove navio do MAP
+            grid[cellRow][cellCol] = CellState.WATER;
+            shipByCoordinate.remove(coordinateKey(cellRow, cellCol), ship); //remove navio do MAP
         }
         
         ship.clearPosition(); //placed = false
@@ -134,25 +134,25 @@ public class Board {
         //return / break caso ache falha
         
         for (int i = 0; i < ship.getSize(); i++) {
-            int linha;
-            int coluna;
+            int cellRow; //guarda linha da célula [i]
+            int cellCol; //guarda coluna da célula [i]
             
             //ajusta var locais para verificar orientação, assim como foi feito em segmentIndexAt() (Ship)
             if (orientation == Orientation.HORIZONTAL) {
-                linha = row; //H -> trava row
-                coluna = col + i; //H -> muda col
+                cellRow = row; //H -> trava row
+                cellCol = col + i; //H -> muda col
             } else {
-                linha = row + i; //V -> muda row
-                coluna = col; //V -> trava col
+                cellRow = row + i; //V -> muda row
+                cellCol = col; //V -> trava col
             }
             
             //pergunta se a célula do navio está fora do grid
-            if (!isInside(linha, coluna)) {
+            if (!isInside(cellRow, cellCol)) {
                 return false;
             }
             
             //pergunta se já tem um navio na posição
-            if (getShipAt(linha, coluna) != null) {
+            if (getShipAt(cellRow, cellCol) != null) {
                 return false;
             }
         }
@@ -233,9 +233,9 @@ public class Board {
             }
             
             boolean placedShip = false;
-            int tentativas = 0; //contador de tentativas para evitar loop infinito
+            int attempts = 0; //contador de tentativas para evitar loop infinito
             //Enquanto extourar as tentaticas E não posicionar o navio
-            while (tentativas < 50 && !placedShip) {
+            while (attempts < 50 && !placedShip) {
                 //SORTEIO VARs
                 int randRow = random.nextInt(0, size);
                 int randCol = random.nextInt(0, size);
@@ -249,7 +249,7 @@ public class Board {
 
                 //posiciona e troca a variável de controle para true se conseguir posicionar
                 placedShip = placeShip(fleet.get(i), randRow, randCol, orientation);
-                tentativas++;
+                attempts++;
             }
         }
     }
@@ -272,8 +272,8 @@ public class Board {
 
     //Formata posição para 'A2', 'D6', etc
     public static String coordinateKey(int row, int col) {
-        char letra = (char)('A' + col);
-        return "" + letra + (row + 1);
+        char letter = (char)('A' + col);
+        return "" + letter + (row + 1);
     }
 
     public int getSize() {
