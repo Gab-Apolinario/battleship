@@ -5,6 +5,7 @@ import java.util.Map;
 import java.util.Random;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.random.*;
 
 public class Board {
     private int size;
@@ -221,7 +222,36 @@ public class Board {
     }
 
     public void placeFleetRandomly(List<Ship> fleet, Random random) {
+        if (locked) { //validação
+            return;
+        }
         
+        //cada navio precisa de coluna, linha (0 até size) e orientação (boolean) aleatória
+        for (int i = 0; i < fleet.size(); i++) {
+            if (fleet.get(i).isPlaced()){
+                continue; //se já está posicionado, pula para o próximo navio
+            }
+            
+            boolean placedShip = false;
+            int tentativas = 0; //contador de tentativas para evitar loop infinito
+            //Enquanto extourar as tentaticas E não posicionar o navio
+            while (tentativas < 50 && !placedShip) {
+                //SORTEIO VARs
+                int randRow = random.nextInt(0, size);
+                int randCol = random.nextInt(0, size);
+                boolean randOrientation = random.nextBoolean();
+                Orientation orientation;
+                if (randOrientation) {
+                    orientation = Orientation.HORIZONTAL;
+                } else {
+                    orientation = Orientation.VERTICAL;
+                }
+
+                //posiciona e troca a variável de controle para true se conseguir posicionar
+                placedShip = placeShip(fleet.get(i), randRow, randCol, orientation);
+                tentativas++;
+            }
+        }
     }
 
     public void lock() {
