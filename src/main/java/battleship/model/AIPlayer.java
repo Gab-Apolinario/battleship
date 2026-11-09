@@ -27,12 +27,27 @@ public class AIPlayer extends Player {
     }
 
     public void enqueueNeighbors(int row, int col, int boardSize) {
-        //valida se está dentro do tabuleiro antes de adicionar à fila
-        //4 candidados: cima (row - 1, col), baixo (row + 1, col), esquerda (row, col - 1), direita (row, col + 1)
+        int[] dRow = {-1, 1, 0, 0};
+        int[] dCol = {0, 0, -1, 1};
+
+        for (int i = 0; i < 4; i++) {
+            //4 candidados: cima (row - 1, col), baixo (row + 1, col), esquerda (row, col - 1), direita (row, col + 1)
+            int newRow = row + dRow[i];
+            int newCol = col + dCol[i];
+
+            //valida se está dentro do tabuleiro e se já foi atirada antes de adicionar à fila 
+            if ((newRow >= 0 && newRow <= boardSize - 1) && (newCol >= 0 && newCol <= boardSize - 1) && !alreadyShot(newRow, newCol)) { //isInside() do Board
+                targetQueue.add(newRow + "," + newCol);
+            }
+        }
     }
 
     public void resetTargetMode() {
         //se SUNK, limpa fila, reseta lastHitRow e lastHitCol e huntMode -> false
+        targetQueue.clear();
+        lastHitRow = -1;
+        lastHitCol = -1;
+        huntMode = false;
     }
 
     @Override
