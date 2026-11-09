@@ -42,6 +42,28 @@ public class AIPlayer extends Player {
         }
     }
 
+    @Override
+    public void registerResult(int row, int col, ShotResult result) {
+        super.registerResult(row, col, result);
+
+        switch (result) {
+            case HIT:
+                huntMode = true;
+                lastHitRow = row;
+                lastHitCol = col;
+                enqueueNeighbors(row, col, board.getSize());
+                break;
+            case MISS:
+                if (targetQueue.isEmpty()){
+                    resetTargetMode();
+                }
+                break;
+            case SUNK:
+                resetTargetMode();
+                break;    
+        }
+    }
+
     public void resetTargetMode() {
         //se SUNK, limpa fila, reseta lastHitRow e lastHitCol e huntMode -> false
         targetQueue.clear();
