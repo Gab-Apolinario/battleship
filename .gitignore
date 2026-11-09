@@ -3,3 +3,4 @@ target/
 src/main/java/battleship/model/TesteShips.java
 docs/guia-projeto-felipe.md
 docs/tabela.md
+docs/tabela_player.md
