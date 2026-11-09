@@ -103,8 +103,45 @@ public abstract class Player {
         ready = false;
     }
 
+    public String getName() {
+        return this.name;
+    }
+
+    public Board getBoard() {
+        return this.board;
+    }
+
+    public int getShotsFired() {
+        return this.shotsFired;
+    }
+    
+    public int getHits() {
+        return this.hits;
+    }
+
+    public int getMisses() {
+        return this.misses;
+    }
+
+
+    public int getSunkEnemyShips() {
+        return this.sunkEnemyShips;
+    }
+
+    public int getTurnsPlayed() {
+        return this.turnsPlayed;
+    }
+
     public int getScore() {
         return this.score;
+    }
+    
+    public boolean isReady() {
+        return this.ready;
+    }
+
+    public String getLastShot() {
+        return this.lastShot;
     }
 
     public abstract boolean isAutomatic();
