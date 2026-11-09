@@ -21,9 +21,27 @@ public class AIPlayer extends Player {
     }
 
     public String chooseTarget(Board opponent) {
-        //laço que repete até achar uma célula válida para atirar
-        //random.nextInt(0, opponent.getSize()) -> usa tamanho do board, garantindo que está dentro do tabuleiro
-        return null;
+        //Olha primeiro a fila
+        while (!targetQueue.isEmpty()) {
+            //row e col precisam de parseInt
+            String[] p = targetQueue.pollFirst().split(",");
+            int row = Integer.parseInt(p[0]);
+            int col = Integer.parseInt(p[1]);
+            if (!alreadyShot(row, col)) {
+                return row + "," + col;
+            }
+        }
+        
+        //SORTEIO
+        int randRow;
+        int randCol;
+        do { //do/while pq variaveis inicial sem valor
+            randRow = random.nextInt(0, opponent.getSize()); //usa tamanho do board, garantindo que está dentro do tabuleiro
+            randCol = random.nextInt(0, opponent.getSize());
+        }
+        while (alreadyShot(randRow, randCol)); //laço que repete até achar uma célula válida para atirar
+
+        return randRow + "," + randCol;
     }
 
     public void enqueueNeighbors(int row, int col, int boardSize) {
