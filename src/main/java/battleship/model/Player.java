@@ -19,6 +19,7 @@ public abstract class Player {
     public Player(String name, Board board) {
         this.name = name;
         this.board = board;
+        this.shotsFired = 0;
         this.hits = 0;
         this.misses = 0;
         this.sunkEnemyShips = 0;
@@ -30,11 +31,39 @@ public abstract class Player {
     }
 
     public ShotResult fireAt(Board opponent, int row, int col) {
-        return null;
+        if (opponent == null || !opponent.isInside(row, col) || alreadyShot(row, col)) {
+            return ShotResult.INVALID; //retorna INVALID se o oponente for nulo, coordenadas inválidas ou já atiradas
+        }
+
+        ShotResult result = opponent.receiveShot(row, col);
+        registerResult(row, col, result);
+        return result;
     }
 
     public void registerResult(int row, int col, ShotResult result) {
+        if (result == ShotResult.INVALID) {
+            return; //não registra resultados inválidos
+        }
 
+        switch (result) {
+            case HIT:
+                hits++;
+                addScore(10); //adiciona 10 pontos por acerto
+                break;
+            case MISS:
+                misses++;
+                break;
+            case SUNK:
+                hits++;
+                sunkEnemyShips++;
+                addScore(50); //adiciona 50 pontos por afundar um navio
+                break;
+        }
+
+        shotsFired++;
+        turnsPlayed++;
+        lastShot = Board.coordinateKey(row, col);
+        shotHistory.add(lastShot);
     }
 
     public boolean alreadyShot(int row, int col) {
@@ -73,6 +102,10 @@ public abstract class Player {
         lastShot = "";
         ready = false;
     }
-    
+
+    public int getScore() {
+        return this.score;
+    }
+
     public abstract boolean isAutomatic();
 }
