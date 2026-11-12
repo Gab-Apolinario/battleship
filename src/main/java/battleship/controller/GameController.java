@@ -120,16 +120,50 @@ public class GameController {
 
     public ShotResult playerAttack(int row, int col) {
         if (gameState == GameState.PLAYER_ATTACK) {
-            //fireAt
+            ShotResult hit = humanPlayer.fireAt(aiPlayer.getBoard(), row, col); //atira no tabuleiro do inimigo
+            if (hit == ShotResult.INVALID){
+                return  hit;
+            } else if (hit == ShotResult.HIT || hit == ShotResult.SUNK) { //se acertou ou afundou um barco (acertou)
+                if (isGameOver(aiPlayer.getBoard())) { //verifica se afundou todos os navios
+                    winner = humanPlayer;
+                    gameState = GameState.END_GAME;
+                } else {
+                    gameState = GameState.PLAYER_ATTACK; //repete jogada por ter acertado
+                }
+                return hit;
+            } else {
+                gameState = GameState.ENEMY_ATTACK; //MISS -> passa jogada
+                return hit;
+            }
         }
-        return null;
+        return ShotResult.INVALID;
     }
 
     public ShotResult enemyAttack() {
         if (gameState == GameState.ENEMY_ATTACK) {
-            //aiPlayer.chooseTarget(humanPlayer.getBoard());
+            String target = aiPlayer.chooseTarget(humanPlayer.getBoard()); //separa ["row, col"]
+            String[] t = target.split(",");
+            int row = Integer.parseInt(t[0]);
+            int col = Integer.parseInt(t[1]);
+
+            ShotResult hit = aiPlayer.fireAt(humanPlayer.getBoard(), row, col); //atira no tabuleiro do jogador humano
+            
+            if (hit == ShotResult.INVALID){
+                return  hit;
+            } else if (hit == ShotResult.HIT || hit == ShotResult.SUNK) { //se acertou ou afundou um barco (acertou)
+                if (isGameOver(humanPlayer.getBoard())) { //verifica se afundou todos os navios
+                    winner = aiPlayer;
+                    gameState = GameState.END_GAME;
+                } else {
+                    gameState = GameState.ENEMY_ATTACK; //repete jogada por ter acertado
+                }
+                return hit;
+            } else {
+                gameState = GameState.PLAYER_ATTACK; //MISS -> passa jogada
+                return hit;
+            }
         }
-        return null;
+        return ShotResult.INVALID;
     }
 
     private boolean isGameOver(Board hit) {
