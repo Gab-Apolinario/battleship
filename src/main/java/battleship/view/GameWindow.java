@@ -25,7 +25,7 @@ public class GameWindow {
                 currentScreen = new MenuScreen(gameController, this);
                 break;
             case PREPARATION:
-                currentScreen = new PlaceholderScreen(gameController, this, "PREPARATION");
+                currentScreen = new PreparationScreen(gameController, this);
                 break;
             case PLAYER_ATTACK:
                 //currentScreen = new PlayerAttackScreen(gameController, this);
