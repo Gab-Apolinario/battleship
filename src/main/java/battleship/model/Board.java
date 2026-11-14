@@ -171,8 +171,8 @@ public class Board {
                 return false;
             }
             
-            //pergunta se já tem um navio na posição
-            if (getShipAt(cellRow, cellCol) != null) {
+            //pergunta se tem navio e não é este navio
+            if ((getShipAt(cellRow, cellCol) != null) && (getShipAt(cellRow, cellCol) != ship)) {
                 return false;
             }
         }
