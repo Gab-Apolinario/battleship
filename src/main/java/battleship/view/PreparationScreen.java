@@ -1,7 +1,7 @@
 package battleship.view;
 
-
 import battleship.controller.GameController;
+import battleship.model.Ship;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
@@ -22,7 +22,7 @@ public class PreparationScreen extends Screen {
 
         layout = new VBox(10);
         titleLabel = new Label("PREPARATION");
-        boardView = new BoardView(gameController.getHuman().getBoard(), false, false);
+        boardView = new BoardView(gameController.getHuman().getBoard(), false, true);
 
         layout.getChildren().addAll(titleLabel, boardView.getGrid(),randomFleetButton, startButton);
         layout.setAlignment(Pos.CENTER);
@@ -32,10 +32,30 @@ public class PreparationScreen extends Screen {
             }
         });
 
+        boardView.setListener((r, c) -> handleCellClick(r, c));
+
         randomFleetButton.setOnAction(e -> {
             gameController.randomizePlayerFleet();
             boardView.refresh();
         });
+    }
+
+    private void handleCellClick(int row, int col) {
+        Ship cellShip = gameController.getHuman().getBoard().getShipAt(row, col);
+        
+        if (cellShip != null) { //SE FOR NAVIO NA CELULA
+            if (cellShip == gameController.getSelectedShip()) { //Se o navio nessa célula é igual ao selecionado
+                gameController.rotateSelectedShip(); //rotaciona ao clicar
+            } else {
+                gameController.selectShip(cellShip); //seleciona o navio
+            }
+        } else {
+            if (gameController.getSelectedShip() != null) { //se célula for AGUA e tem navio selecionado
+                gameController.moveSelectedShip(row, col); //tenta mover para essa célula
+            }
+        }
+        
+        boardView.refresh(); //sempre atualiza o tabuleiro (visualmente)
     }
 
     @Override
