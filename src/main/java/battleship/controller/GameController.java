@@ -34,14 +34,12 @@ public class GameController {
             humanPlayer = new HumanPlayer("Player 1", humanBoard);
             playerFleet = createFleet();
             
-            //if botão aleatório
-            //humanPlayer.getBoard().placeFleetRandomly(playerFleet, new java.util.Random()); //TESTE
-
             //AI
             Board aiBoard = new Board(BOARD_SIZE);
             aiPlayer = new AIPlayer("AI", aiBoard);
-
+            
             gameState = GameState.PREPARATION;
+            randomizePlayerFleet();
         }
     }
 
@@ -64,7 +62,6 @@ public class GameController {
         if (gameState == GameState.PREPARATION && selectedShip != null) {
             return humanPlayer.getBoard().placeShip(selectedShip, row, col, selectedShip.getOrientation());
         }
-        selectedShip = null;
         return false;
     }
 
@@ -87,9 +84,19 @@ public class GameController {
         }
         return false;
     }
+    
+    public boolean moveSelectedShip(int row, int col) {
+        if (gameState == GameState.PREPARATION && selectedShip != null) {
+            return humanPlayer.getBoard().moveShip(selectedShip, row, col);
+        }
+        return false;
+    }
 
     public void randomizePlayerFleet() {
         if (gameState == GameState.PREPARATION) {
+            for (int i = 0; i < playerFleet.size(); i++) {
+                humanPlayer.getBoard().removeShip(playerFleet.get(i));
+            }
             Random random = new Random();
             humanPlayer.getBoard().placeFleetRandomly(playerFleet, random);
         }
