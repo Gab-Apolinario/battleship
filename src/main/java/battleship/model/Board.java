@@ -102,6 +102,26 @@ public class Board {
         }
     }
 
+    public boolean moveShip(Ship ship, int row, int col) {
+        if (locked || !ship.isPlaced()) { //tabuleiro travado OU navio não está posicionado
+            return false;
+        }
+
+        //guarda posição atual
+        int oldRow = ship.getStartRow();
+        int oldCol = ship.getStartCol();
+        Orientation oldOrientation = ship.getOrientation();
+
+        removeShip(ship);
+        if (canPlace(ship, row, col, oldOrientation)) {
+            placeShip(ship, row, col, oldOrientation);
+            return true;
+        } else {
+            placeShip(ship, oldRow, oldCol, oldOrientation);
+            return false;
+        }
+    }
+    
     public void removeShip(Ship ship) {
         if (locked || !ship.isPlaced()) { //tabuleiro travado OU navio não está posicionado
             return;
