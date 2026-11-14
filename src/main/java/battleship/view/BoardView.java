@@ -2,6 +2,7 @@ package battleship.view;
 
 import battleship.model.Board;
 import battleship.model.CellState;
+import battleship.model.Ship;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.layout.GridPane;
@@ -13,13 +14,15 @@ public class BoardView {
     private Button[][] buttons;
     private GridPane grid;
     private CellClickListener listener;
+    private Ship selectedShip;
 
+    
     public BoardView(Board board, boolean hideShips, boolean clickable) {
         this.board = board;
         this.hideShips = hideShips;
         this.clickable = clickable;
         buttons = new Button[board.getSize()][board.getSize()];
-
+        
         //GRID
         grid = new GridPane(2, 2); //grid de botões (2,2) -> espaçamento entre os itens do grid
         grid.setAlignment(Pos.CENTER);
@@ -33,12 +36,16 @@ public class BoardView {
                 button.setOnAction(e -> {
                     if (clickable && listener != null) {listener.onCellClick(row, col);}
                 });
-
+                
                 grid.add(button, col, row); //Adiciona botão .add(node, col, row) do grid
             }
         }
-
+        
         refresh();
+    }
+    
+    public void setSelectedShip(Ship selectedShip) {
+        this.selectedShip = selectedShip;
     }
 
     public GridPane getGrid() {
@@ -55,27 +62,31 @@ public class BoardView {
             for (int j = 0; j < buttons.length; j++) {
                 CellState showState = board.getCellState(i, j);
                 if (hideShips && showState == CellState.SHIP) { //se for tabuleiro da IA, não mostra os navios
-                    paintCell(buttons[i][j], CellState.WATER);
+                    paintCell(buttons[i][j], CellState.WATER, i, j);
                 } else {
-                    paintCell(buttons[i][j], showState);
+                    paintCell(buttons[i][j], showState, i, j);
                 }
             }
         }
     }
 
-    private void paintCell(Button button, CellState state) {
+    private void paintCell(Button button, CellState state, int row, int col) {
         switch (state) {
             case WATER:
                 //cor azul
                 button.setStyle("-fx-background-color: #4582d2");
-            break;
+                break;
             case WATER_HIT:
                 //azul escuro
                 button.setStyle("-fx-background-color: #1f3f68");
                 break;
             case SHIP:
                 //cinza claro
-                button.setStyle("-fx-background-color: #6c6c6c");
+                String style = "-fx-background-color: #6c6c6c;";
+                if (board.getShipAt(row, col) == selectedShip) {
+                    style += "-fx-border-color: gold; -fx-border-width: 3;";
+                }
+                button.setStyle(style);
                 break;
             case SHIP_HIT:
                 //cinza escuro OU vermelho

@@ -36,6 +36,7 @@ public class PreparationScreen extends Screen {
 
         randomFleetButton.setOnAction(e -> {
             gameController.randomizePlayerFleet();
+            boardView.setSelectedShip(gameController.getSelectedShip());
             boardView.refresh();
         });
     }
@@ -55,6 +56,7 @@ public class PreparationScreen extends Screen {
             }
         }
         
+        boardView.setSelectedShip(gameController.getSelectedShip());
         boardView.refresh(); //sempre atualiza o tabuleiro (visualmente)
     }
 
