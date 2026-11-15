@@ -102,6 +102,26 @@ public class Board {
         }
     }
 
+    public boolean moveShip(Ship ship, int row, int col) {
+        if (locked || !ship.isPlaced()) { //tabuleiro travado OU navio não está posicionado
+            return false;
+        }
+
+        //guarda posição atual
+        int oldRow = ship.getStartRow();
+        int oldCol = ship.getStartCol();
+        Orientation oldOrientation = ship.getOrientation();
+
+        removeShip(ship);
+        if (canPlace(ship, row, col, oldOrientation)) {
+            placeShip(ship, row, col, oldOrientation);
+            return true;
+        } else {
+            placeShip(ship, oldRow, oldCol, oldOrientation);
+            return false;
+        }
+    }
+    
     public void removeShip(Ship ship) {
         if (locked || !ship.isPlaced()) { //tabuleiro travado OU navio não está posicionado
             return;
@@ -151,8 +171,8 @@ public class Board {
                 return false;
             }
             
-            //pergunta se já tem um navio na posição
-            if (getShipAt(cellRow, cellCol) != null) {
+            //pergunta se tem navio e não é este navio
+            if ((getShipAt(cellRow, cellCol) != null) && (getShipAt(cellRow, cellCol) != ship)) {
                 return false;
             }
         }
