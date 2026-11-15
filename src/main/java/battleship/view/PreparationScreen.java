@@ -33,15 +33,15 @@ public class PreparationScreen extends Screen {
 
         layout = new VBox(5);
         titleLabel = new Label("PREPARAÇÃO");
-        titleLabel.setStyle("-fx-text-fill: #cfcece; -fx-font-size: 42px; -fx-font-weight: bold;");
+        titleLabel.setStyle("-fx-text-fill: #cfcece; -fx-font-size: 55px; " + TITLE_FONT);
         infoLabel = new Label("Posicione sua frota e inicie a batalha");
-        infoLabel.setStyle("-fx-text-fill: #9fb3cf; -fx-font-size: 18px;");
+        infoLabel.setStyle("-fx-text-fill: #9fb3cf; -fx-font-size: 22px; " + BODY_FONT);
         boardView = new BoardView(gameController.getHuman().getBoard(), false, true, 54);
 
-        titleBox = new VBox(10);
+        titleBox = new VBox();
         titleBox.getChildren().addAll(titleLabel, infoLabel);
         titleBox.setAlignment(Pos.CENTER);
-        titleBox.setPadding(new Insets(20, 25, 20, 25)); //espaço interno
+        titleBox.setPadding(new Insets(12, 25, 12, 25)); //espaço interno
         titleBox.setMaxWidth(1100); //impede de esticar até a largura da janela
         titleBox.setStyle("-fx-background-color: #0f3a4a; -fx-background-radius: 12; -fx-border-color: #b89d12; -fx-border-radius: 12; -fx-border-width: 2;"); //fundo, cantos e borda dourada
 
@@ -71,7 +71,7 @@ public class PreparationScreen extends Screen {
 
         layout.getChildren().addAll(titleBox, contentBox, buttonsBox);
         layout.setAlignment(Pos.CENTER);
-        layout.setStyle("-fx-background-color: #002932;");
+        layout.setStyle("-fx-background-color: #002932; " + BODY_FONT);
         startButton.setOnAction(e -> {
             if (gameController.finishPreparation()) {
                 window.update();
@@ -110,7 +110,7 @@ public class PreparationScreen extends Screen {
     private VBox createCard(String title, String... lines) {
         VBox card = new VBox(8);
         Label cardTitle = new Label(title);
-        cardTitle.setStyle("-fx-text-fill: #b89d12; -fx-font-size: 22px; -fx-font-weight: bold;");
+        cardTitle.setStyle("-fx-text-fill: #b89d12; -fx-font-size: 22px; " + TITLE_FONT);
         card.getChildren().add(cardTitle);
         for (String line : lines) {
             Label lineLabel = new Label(line);

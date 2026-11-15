@@ -38,9 +38,9 @@ public class BattleScreen extends Screen {
         playerView = new BoardView(gameController.getHuman().getBoard(), false, false, 42); //grid Human Player
 
         playerName = new Label(gameController.getHuman().getName());
-        playerName.setStyle("-fx-text-fill: #ffffff; -fx-font-size: 34px; -fx-font-weight: bold;");
+        playerName.setStyle("-fx-text-fill: #cfcece; -fx-font-size: 34px; " + TITLE_FONT);
         enemyName = new Label(gameController.getAi().getName());
-        enemyName.setStyle("-fx-text-fill: #ffffff; -fx-font-size: 34px; -fx-font-weight: bold;");
+        enemyName.setStyle("-fx-text-fill: #cfcece; -fx-font-size: 34px; " + TITLE_FONT);
 
         playerStatusLabel = new Label();
         playerStatusLabel.setStyle("-fx-text-fill: #b9b9b9; -fx-font-size: 18px; -fx-font-weight: bold;");
@@ -62,9 +62,9 @@ public class BattleScreen extends Screen {
         hBoxViews.getChildren().addAll(vBoxPlayer, viewsRegion, vBoxEnemy);
         hBoxViews.setAlignment(Pos.CENTER);
         turnStatusLabel = new Label("SUA VEZ");
-        turnStatusLabel.setStyle("-fx-text-fill: #b89d12; -fx-font-size: 42px; -fx-font-weight: bold;");
+        turnStatusLabel.setStyle("-fx-text-fill: #b89d12; -fx-font-size: 55px; " + TITLE_FONT);
         infoLabel = new Label("Clique em uma célula do tabuleiro inimigo para atirar");
-        infoLabel.setStyle("-fx-text-fill: #9fb3cf; -fx-font-size: 18px;");
+        infoLabel.setStyle("-fx-text-fill: #9fb3cf; -fx-font-size: 22px; " + BODY_FONT);
 
         turnBox = new VBox(5); //cria o container com espaço de 5 entre os dois labels
         turnBox.getChildren().addAll(turnStatusLabel, infoLabel); //coloca os dois labels dentro do container
@@ -85,7 +85,7 @@ public class BattleScreen extends Screen {
         layout = new VBox(20);
         layout.getChildren().addAll(turnBox, hBoxViews, hBoxSubtitles);
         layout.setAlignment(Pos.CENTER);
-        layout.setStyle("-fx-background-color: #002932;");
+        layout.setStyle("-fx-background-color: #002932; " + BODY_FONT);
 
         refreshStatus();
     }
