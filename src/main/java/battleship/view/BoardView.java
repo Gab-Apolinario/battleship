@@ -32,7 +32,7 @@ public class BoardView {
         //Letras topo do grid
         for (int j = 0; j < board.getSize(); j++) {
             Label letter = new Label(String.valueOf((char)('A' + j)));
-            letter.setMinSize(50, 50);
+            letter.setMinSize(50, 30);
             letter.setAlignment(Pos.CENTER);
             grid.add(letter, j + 1, 0);
         }
@@ -115,8 +115,12 @@ public class BoardView {
                 button.setStyle(style);
                 break;
             case SHIP_HIT:
-                //cinza escuro OU vermelho
-                button.setStyle("-fx-background-color: #5b0000;");
+                if (board.getShipAt(row, col).isSunk()) {
+                    button.setStyle("-fx-background-color: #d32f2f;");
+                } else {
+                    //cinza escuro OU vermelho
+                    button.setStyle("-fx-background-color: #5b0000;");
+                }   
                 break;
         }
     }
