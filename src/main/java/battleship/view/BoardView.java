@@ -6,6 +6,7 @@ import battleship.model.Orientation;
 import battleship.model.Ship;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 
 public class BoardView {
@@ -23,13 +24,33 @@ public class BoardView {
         this.clickable = clickable;
         buttons = new Button[board.getSize()][board.getSize()];
 
+        
         //GRID
         grid = new GridPane(2, 2); //grid de botões (2,2) -> espaçamento entre os itens do grid
         grid.setAlignment(Pos.CENTER);
-        for (int i = 0; i < board.getSize(); i++) { //for para adicionar os botões nas linhas (i)/colunas (j)
+        
+        //Letras topo do grid
+        for (int j = 0; j < board.getSize(); j++) {
+            Label letter = new Label(String.valueOf((char)('A' + j)));
+            letter.setMinSize(50, 50);
+            letter.setAlignment(Pos.CENTER);
+            grid.add(letter, j + 1, 0);
+        }
+
+        //Numeros lado do grid
+        for (int i = 0; i < board.getSize(); i++) {
+            Label num = new Label(String.valueOf(i + 1));
+            num.setMinSize(30, 50);
+            num.setAlignment(Pos.CENTER);
+            grid.add(num, 0, i + 1);
+        }
+        
+        for (int i = 0; i < board.getSize(); i++) { //for para adicionar os botões nas linhas (i)/colunas (j) do grid
             for (int j = 0; j < board.getSize(); j++) {
                 int row = i;
                 int col = j;
+
+
                 Button button = new Button(" ");
                 button.setPrefSize(50, 50); //padroniza tamanho dos botões
                 buttons[i][j] = button;
@@ -42,7 +63,7 @@ public class BoardView {
                 button.setOnMouseEntered(e -> showPreview(row, col)); //se o mouse estiver em cima do botão, mostra preview
                 button.setOnMouseExited(e -> refresh()); //se o mouse sai de cima do botão, atualiza grid
 
-                grid.add(button, col, row); //Adiciona botão .add(node, col, row) do grid
+                grid.add(button, col + 1, row + 1); //Adiciona botão .add(node, col, row) do grid
             }
         }
 
