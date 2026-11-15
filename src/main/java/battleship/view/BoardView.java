@@ -14,14 +14,16 @@ public class BoardView {
     private boolean hideShips; //tabuleiro inimigo não mostra os navios posicionados
     private boolean clickable; //tabuleiro clicável = botões para atacar
     private Button[][] buttons;
+    private int cellSize;
     private GridPane grid;
     private CellClickListener listener;
     private Ship selectedShip;
 
-    public BoardView(Board board, boolean hideShips, boolean clickable) {
+    public BoardView(Board board, boolean hideShips, boolean clickable, int cellSize) {
         this.board = board;
         this.hideShips = hideShips;
         this.clickable = clickable;
+        this.cellSize = cellSize;
         buttons = new Button[board.getSize()][board.getSize()];
 
         
@@ -32,16 +34,18 @@ public class BoardView {
         //Letras topo do grid
         for (int j = 0; j < board.getSize(); j++) {
             Label letter = new Label(String.valueOf((char)('A' + j)));
-            letter.setMinSize(50, 30);
+            letter.setMinSize(cellSize, 30);
             letter.setAlignment(Pos.CENTER);
+            letter.setStyle("-fx-text-fill: #9fb3cf; -fx-font-weight: bold;");
             grid.add(letter, j + 1, 0);
         }
 
         //Numeros lado do grid
         for (int i = 0; i < board.getSize(); i++) {
             Label num = new Label(String.valueOf(i + 1));
-            num.setMinSize(30, 50);
+            num.setMinSize(30, cellSize);
             num.setAlignment(Pos.CENTER);
+            num.setStyle("-fx-text-fill: #9fb3cf; -fx-font-weight: bold;");
             grid.add(num, 0, i + 1);
         }
         
@@ -52,7 +56,7 @@ public class BoardView {
 
 
                 Button button = new Button(" ");
-                button.setPrefSize(50, 50); //padroniza tamanho dos botões
+                button.setPrefSize(cellSize, cellSize); //padroniza tamanho dos botões
                 buttons[i][j] = button;
                 button.setOnAction(e -> {
                     if (clickable && listener != null) {
@@ -116,7 +120,7 @@ public class BoardView {
                 break;
             case SHIP_HIT:
                 if (board.getShipAt(row, col).isSunk()) {
-                    button.setStyle("-fx-background-color: #d32f2f;");
+                    button.setStyle("-fx-background-color: #b32828;");
                 } else {
                     //cinza escuro OU vermelho
                     button.setStyle("-fx-background-color: #5b0000;");
