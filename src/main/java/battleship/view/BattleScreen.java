@@ -82,8 +82,8 @@ public class BattleScreen extends Screen {
     }
 
     private void refreshStatus() {
-        playerStatusLabel.setText(statusText(gameController.getHuman()));
-        enemyStatusLabel.setText(statusText(gameController.getAi()));
+        playerStatusLabel.setText(battleStatusText(gameController.getHuman()));
+        enemyStatusLabel.setText(battleStatusText(gameController.getAi()));
     }
 
 }

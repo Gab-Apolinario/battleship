@@ -14,9 +14,13 @@ public abstract class Screen {
     }
 
     protected String statusText(Player player) {
-        return String.format("Shots Fired: %d | Hits: %d | Misses: %d | Sunk Ships: %d | Turns Played: %d | SCORE: %d | Accuracy: %.2f",
+        return String.format("Tiros Disparados: %d | Acertos: %d | Erros: %d | Navios Inimigos Afundados: %d | Jogadas: %d | PONTUAÇÃO: %d | Taxa de Acertos: %.2f",
             player.getShotsFired(), player.getHits(), player.getMisses(), player.getSunkEnemyShips(),
             player.getTurnsPlayed(), player.getScore(), player.getAccuracy());
+    }
+    protected String battleStatusText(Player player) {
+        return String.format("Tiros Disparados: %d | Acertos: %d | Navios Inimigos Afundados: %d",
+            player.getShotsFired(), player.getHits(), player.getSunkEnemyShips());
     }
 
     public abstract Parent getRoot();
