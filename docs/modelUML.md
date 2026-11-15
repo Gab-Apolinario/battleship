@@ -47,10 +47,18 @@ classDiagram
         +isSegmentHit(segmentIndex: int) boolean
         +setPosition(row: int, col: int, orientation: Orientation) void
         +setOrientation(orientation: Orientation) void
+        +clearPosition() void
         +getCoordinates() List~String~
         +getHits() int
         +isSunk() boolean
+        +isPlaced() boolean
+        +getId() int
+        +getName() String
+        +getSymbol() char
         +getSize() int
+        +getStartRow() int
+        +getStartCol() int
+        +getOrientation() Orientation
         +getDescription()* String
     }
 
@@ -90,6 +98,7 @@ classDiagram
         +Board(size: int)
         +placeShip(ship: Ship, row: int, col: int, orientation: Orientation) boolean
         +rotateShip(ship: Ship) boolean
+        +moveShip(ship: Ship, row: int, col: int) boolean
         +removeShip(ship: Ship) void
         +canPlace(ship: Ship, row: int, col: int, orientation: Orientation) boolean
         +receiveShot(row: int, col: int) ShotResult
@@ -101,6 +110,12 @@ classDiagram
         +allShipsSunk() boolean
         +getRemainingShips() int
         +coordinateKey(row: int, col: int)$ String
+        +getSize() int
+        +getLastShot() String
+        +getShotsReceived() int
+        +getHitsReceived() int
+        +getMissesReceived() int
+        +getShips() List~Ship~
     }
 
     %% ===== Players =====
@@ -123,7 +138,18 @@ classDiagram
         +alreadyShot(row: int, col: int) boolean
         +addScore(points: int) void
         +setBoard(board: Board) void
+        -resetStats() void
         +getAccuracy() double
+        +getName() String
+        +getBoard() Board
+        +getShotsFired() int
+        +getHits() int
+        +getMisses() int
+        +getSunkEnemyShips() int
+        +getTurnsPlayed() int
+        +getScore() int
+        +isReady() boolean
+        +getLastShot() String
         +isAutomatic()* boolean
     }
 
@@ -157,7 +183,7 @@ classDiagram
     Player <|-- AIPlayer
 
     Player "1" *-- "1" Board : owns
-    Board "1" *-- "5" Ship : fleet
+    Board "1" *-- "0..5" Ship : fleet
     Board ..> CellState : grid cells
     Board ..> ShotResult : returns
     Ship --> Orientation : has
@@ -166,11 +192,18 @@ classDiagram
 
 ## How to read it
 
-- Attributes: `visibility name: Type`. Methods: `visibility name(param: Type) ReturnType` (the renderer shows `: ReturnType`).
+- Attributes: `visibility name: Type`. Methods: `visibility name(param: Type) ReturnType`.
 - Visibility: `-` private, `+` public, `#` protected.
 - `<<abstract>>` above the name = abstract class. A method in *italic* is abstract (`getDescription`, `isAutomatic`). A method underlined is static (`coordinateKey`).
-- Hollow triangle arrow = inheritance (`extends`). Filled diamond = composition (the whole owns the part).
+- Hollow triangle arrow = inheritance (`extends`). Filled diamond = composition (the whole owns the part). Dashed arrow = uses.
 - Ship sizes: Carrier 5, Battleship 4, Cruiser 3, Submarine 3, Destroyer 2.
 - `shipByCoordinate` (Map) links keys like `"B3"` to the `Ship` occupying that cell.
-- Getters/setters that only return or assign a field are omitted for readability.
-- This diagram covers only the `model` package.
+- All public methods are listed, including the simple getters.
+- `Ship.getCoordinates()` and `Player` also call the static `Board.coordinateKey(...)`. Those arrows were left out to keep the diagram readable.
+
+## Changes since the previous version
+
+- `Board`: added `moveShip` and the getters used by the view and the controller. `canPlace` now ignores the ship's own cells.
+- `Ship`: added `clearPosition`, `isPlaced` and the getters for id, name, symbol, size and position.
+- `Player`: added the statistics getters and the private `resetStats`.
+- Fleet multiplicity in `Board` is `0..5`, because ships are added and removed during preparation.
